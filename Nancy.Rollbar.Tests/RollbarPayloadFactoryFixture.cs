@@ -9,12 +9,10 @@ namespace Nancy.Rollbar.Tests {
     public class RollbarPayloadFactoryFixture {
         [Fact]
         public void Test_payload_factory_for_simple_exception() {
-            var at = A.Fake<IHasAccessToken>();
-            at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
-            var payloadFactory = new RollbarPayloadFactory(at, new RollbarDataFactory(new DefaultRootPathProvider()));
-            RollbarPayload payload = null;
-
             // Given
+            RollbarPayload payload = null;
+            var payloadFactory = new RollbarPayloadFactory(GetHasAccessToken(), new RollbarDataFactory(new DefaultRootPathProvider()));
+
             var browser = new Browser(with => with
                 .ApplicationStartup((tinyIoc, pipelines) => pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
                     payload = payloadFactory.GetPayload(ctx, err);
@@ -27,7 +25,7 @@ namespace Nancy.Rollbar.Tests {
 
             // Then
             Assert.NotNull(payload);
-            Assert.Equal(at.RollbarAccessToken, payload.AccessToken);
+            Assert.Equal(GetHasAccessToken().RollbarAccessToken, payload.AccessToken);
             Assert.NotNull(payload.RollbarData);
             Assert.Equal("development", payload.RollbarData.Environment);
             Assert.NotNull(payload.RollbarData.Body);
@@ -80,6 +78,12 @@ namespace Nancy.Rollbar.Tests {
             Assert.Null(payload.RollbarData.Fingerprint);
             Assert.Null(payload.RollbarData.Title);
             Assert.Null(payload.RollbarData.Uuid);
+        }
+
+        private static IHasAccessToken GetHasAccessToken() {
+            var at = A.Fake<IHasAccessToken>();
+            at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
+            return at;
         }
     }
 }
