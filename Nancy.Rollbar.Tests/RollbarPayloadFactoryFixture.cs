@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Nancy.Testing;
 using Valetude.Rollbar;
 using Xunit;
