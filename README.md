@@ -36,7 +36,7 @@ appropriate code into a bootstrapper in an override of `ApplicationStartup`. My
 preference is to create an implementation of `IApplicationStartup` and to let
 Nancy discover, instantiate, and initialize it:
 
-The following illustartes that, but `ScrubPayload` is left unimplemented. You
+The following illustrates that, but `ScrubPayload` is left unimplemented. You
 are 100% responsible for removing passwords and other sensitive information from the
 payload that is sent to Rollbar. While they do have some scrubbing that they do, they
 cannot guess all the various ways you might name fields that you don't want people to
