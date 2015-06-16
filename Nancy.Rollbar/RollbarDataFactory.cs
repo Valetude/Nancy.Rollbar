@@ -51,7 +51,7 @@ namespace Nancy.Rollbar {
         }
 
         private static string GetContext(NancyContext context) {
-            return context.NegotiationContext != null ? context.NegotiationContext.ModuleName : "Before Routing";
+            return context.NegotiationContext != null ? context.NegotiationContext.ModuleName + "Module" : "Before Routing";
         }
 
         private static RollbarRequest GetRollbarRequest(NancyContext context) {

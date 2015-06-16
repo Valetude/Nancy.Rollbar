@@ -85,10 +85,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FakeAccessToken.cs" />
+    <Compile Include="FakeErrorHandler.cs" />
+    <Compile Include="FakeException.cs" />
+    <Compile Include="FakeModule.cs" />
     <Compile Include="FakePerson.cs" />
     <Compile Include="FakePersonFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RollbarDataFactoryFixture.cs" />
     <Compile Include="RollbarPayloadFactoryFixture.cs" />
     <Compile Include="RollbarPayloadSenderFixture.cs" />
   </ItemGroup>
