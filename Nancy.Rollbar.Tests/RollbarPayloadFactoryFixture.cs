@@ -11,15 +11,14 @@ namespace Nancy.Rollbar.Tests {
         public void Test_payload_factory_for_simple_exception() {
             var at = A.Fake<IHasAccessToken>();
             at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
+            var payloadFactory = new RollbarPayloadFactory(at, new RollbarDataFactory(new DefaultRootPathProvider()));
+
             // Given
             var browser = new Browser(with => with
-                .Dependency<RollbarDataFactory>()
-                .Dependency<RollbarPayloadFactory>()
-                .Dependency<FakeErrorHandler>()
-                .Dependency(at)
-                .Dependency<FakeModule>()
-                .Dependency<FakePerson>()
-                .Dependency<FakePersonFactory>()
+                .ApplicationStartup((tinyIoc, pipelines) => pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
+                    ctx.Items["TestPayload"] = payloadFactory.GetPayload(ctx, err);
+                    return "Exception Caught";
+                }))
                 .Module<FakeModule>());
 
             // When
