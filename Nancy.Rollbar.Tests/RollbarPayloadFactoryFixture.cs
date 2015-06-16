@@ -12,20 +12,21 @@ namespace Nancy.Rollbar.Tests {
             var at = A.Fake<IHasAccessToken>();
             at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
             var payloadFactory = new RollbarPayloadFactory(at, new RollbarDataFactory(new DefaultRootPathProvider()));
+            RollbarPayload payload = null;
 
             // Given
             var browser = new Browser(with => with
                 .ApplicationStartup((tinyIoc, pipelines) => pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
-                    ctx.Items["TestPayload"] = payloadFactory.GetPayload(ctx, err);
+                    payload = payloadFactory.GetPayload(ctx, err);
                     return "Exception Caught";
                 }))
                 .Module<FakeModule>());
 
             // When
-            var response = browser.Get("/exception");
-            var payload = (RollbarPayload)response.Context.Items["TestPayload"];
+            browser.Get("/exception");
 
             // Then
+            Assert.NotNull(payload);
             Assert.Equal(at.RollbarAccessToken, payload.AccessToken);
             Assert.NotNull(payload.RollbarData);
             Assert.Equal("development", payload.RollbarData.Environment);
