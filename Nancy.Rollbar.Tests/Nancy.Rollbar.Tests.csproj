@@ -84,7 +84,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="FakeAccessToken.cs" />
     <Compile Include="FakeErrorHandler.cs" />
     <Compile Include="FakeException.cs" />
     <Compile Include="FakeModule.cs" />

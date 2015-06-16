@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using FakeItEasy;
+using FakeItEasy.ExtensionSyntax.Full;
 using Nancy.Testing;
 using Valetude.Rollbar;
 using Xunit;
@@ -7,12 +9,14 @@ namespace Nancy.Rollbar.Tests {
     public class RollbarPayloadFactoryFixture {
         [Fact]
         public void Test_payload_factory_for_simple_exception() {
+            var at = A.Fake<IHasAccessToken>();
+            at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
             // Given
             var browser = new Browser(with => with
                 .Dependency<RollbarDataFactory>()
                 .Dependency<RollbarPayloadFactory>()
                 .Dependency<FakeErrorHandler>()
-                .Dependency<FakeAccessToken>()
+                .Dependency(at)
                 .Dependency<FakeModule>()
                 .Dependency<FakePerson>()
                 .Dependency<FakePersonFactory>()
@@ -23,7 +27,7 @@ namespace Nancy.Rollbar.Tests {
             var payload = (RollbarPayload)response.Context.Items["TestPayload"];
 
             // Then
-            Assert.Equal(FakeAccessToken.FakeToken, payload.AccessToken);
+            Assert.Equal(at.RollbarAccessToken, payload.AccessToken);
             Assert.NotNull(payload.RollbarData);
             Assert.Equal("development", payload.RollbarData.Environment);
             Assert.NotNull(payload.RollbarData.Body);
