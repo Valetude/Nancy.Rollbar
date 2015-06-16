@@ -36,6 +36,13 @@ appropriate code into a bootstrapper in an override of `ApplicationStartup`. My
 preference is to create an implementation of `IApplicationStartup` and to let
 Nancy discover, instantiate, and initialize it:
 
+The following illustartes that, but `ScrubPayload` is left unimplemented. You
+are 100% responsible for removing passwords and other sensitive information from the
+payload that is sent to Rollbar. While they do have some scrubbing that they do, they
+cannot guess all the various ways you might name fields that you don't want people to
+see. `Nancy.Rollbar` does aboslutely no scrubbing for you.
+
+
     using Nancy.Bootstrapper;
 
     namespace Nancy.Rollbar.Tests {
@@ -51,6 +58,7 @@ Nancy discover, instantiate, and initialize it:
             public void Initialize(IPipelines pipelines) {
                 pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
                     var payload = _payloadFactory.GetPayload(ctx, err);
+                    ScrubPayload(payload); // VERY IMPORTANT!
                     var response = _payloadSender.SendPayload(payload);
                     if (response.StatusCode == RollbarResponseCode.Success) {
                         return null; // To Allow the rest of the pipeline to handle the error
