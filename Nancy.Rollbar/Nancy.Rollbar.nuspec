@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Nancy.Rollbar</title>
+    <authors>Chris Pfohl</authors>
+    <owners>Valetude LLC</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/Valetude/Nancy.Rollbar</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Nancy plugin that makes wiring rollbar up very easy.</description>
+    <releaseNotes>
+      Initial Release, not entirely unit tested.
+    </releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>nancy rollbar</tags>
+  </metadata>
+</package>

@@ -10,7 +10,7 @@ you get in [RollbarSharp](https://github.com/mroach/RollbarSharp)
 
 ## Install
 
-Nuget Package Manager (coming soon)
+Nuget Package Manager
 
     install-package Nancy.Rollbar
 
