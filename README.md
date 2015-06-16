@@ -42,30 +42,31 @@ payload that is sent to Rollbar. While they do have some scrubbing that they do,
 cannot guess all the various ways you might name fields that you don't want people to
 see. `Nancy.Rollbar` does aboslutely no scrubbing for you.
 
+```csharp
+using Nancy.Bootstrapper;
 
-    using Nancy.Bootstrapper;
+namespace Nancy.Rollbar.Tests {
+    public class StartupNancyRollbar : IApplicationStartup {
+        private IRollbarPayloadFactory _payloadFactory;
+        private IRollbarPayloadSender _payloadSender;
 
-    namespace Nancy.Rollbar.Tests {
-        public class StartupNancyRollbar : IApplicationStartup {
-            private IRollbarPayloadFactory _payloadFactory;
-            private IRollbarPayloadSender _payloadSender;
+        public StartupNancyRollbar(IRollbarPayloadFactory payloadFactory, IRollbarPayloadSender payloadSender) {
+            _payloadFactory = payloadFactory;
+            _payloadSender = payloadSender;
+        }
 
-            public StartupNancyRollbar(IRollbarPayloadFactory payloadFactory, IRollbarPayloadSender payloadSender) {
-                _payloadFactory = payloadFactory;
-                _payloadSender = payloadSender;
-            }
-
-            public void Initialize(IPipelines pipelines) {
-                pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
-                    var payload = _payloadFactory.GetPayload(ctx, err);
-                    ScrubPayload(payload); // VERY IMPORTANT!
-                    var response = _payloadSender.SendPayload(payload);
-                    if (response.StatusCode == RollbarResponseCode.Success) {
-                        return null; // To Allow the rest of the pipeline to handle the error
-                    }
-                    // If you want to return null anyway it might not be a bad idea. You can also check if `StaticConfiguration.IsRunningDebug`
-                    return "OH NO! ROLLBAR FAILED!";
-                });
-            }
+        public void Initialize(IPipelines pipelines) {
+            pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
+                var payload = _payloadFactory.GetPayload(ctx, err);
+                ScrubPayload(payload); // VERY IMPORTANT!
+                var response = _payloadSender.SendPayload(payload);
+                if (response.StatusCode == RollbarResponseCode.Success) {
+                    return null; // To Allow the rest of the pipeline to handle the error
+                }
+                // If you want to return null anyway it might not be a bad idea. You can also check if `StaticConfiguration.IsRunningDebug`
+                return "OH NO! ROLLBAR FAILED!";
+            });
         }
     }
+}
+```
