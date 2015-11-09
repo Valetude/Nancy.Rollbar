@@ -4,7 +4,7 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>Nancy.Rollbar</title>
-    <authors>Chris Pfohl</authors>
+    <authors>Chris Pfohl, Adam Elnagger</authors>
     <owners>Valetude LLC</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/Valetude/Nancy.Rollbar</projectUrl>
