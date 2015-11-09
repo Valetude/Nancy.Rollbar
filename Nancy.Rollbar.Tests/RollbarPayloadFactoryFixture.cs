@@ -12,7 +12,10 @@ namespace Nancy.Rollbar.Tests {
         public void Test_payload_factory_for_simple_exception() {
             // Given
             RollbarPayload payload = null;
-            var payloadFactory = new RollbarPayloadFactory(GetHasAccessToken(), new RollbarDataFactory(new DefaultRootPathProvider()));
+            var payloadFactory = new RollbarPayloadFactory(
+                GetHasAccessToken(),
+                new RollbarDataFactory(new DefaultRootPathProvider()),
+                new EmptyDataScrubber());
 
             var browser = new Browser(with => with
                 .ApplicationStartup((tinyIoc, pipelines) => pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
@@ -85,6 +88,12 @@ namespace Nancy.Rollbar.Tests {
             var at = A.Fake<IHasAccessToken>();
             at.CallsTo(a => a.RollbarAccessToken).Returns("Fake Access Token");
             return at;
+        }
+
+        private class EmptyDataScrubber : IRollbarDataScrubber {
+            public RollbarData ScrubRollbarData(RollbarData data) {
+                return data;
+            }
         }
     }
 }
