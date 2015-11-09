@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Nancy.Rollbar.Api;
 using Valetude.Rollbar;
 
 namespace Nancy.Rollbar {

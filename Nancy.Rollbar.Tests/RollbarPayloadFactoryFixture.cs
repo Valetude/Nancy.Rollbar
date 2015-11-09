@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
+using Nancy.Rollbar.Api;
 using Nancy.Testing;
 using Valetude.Rollbar;
 using Xunit;

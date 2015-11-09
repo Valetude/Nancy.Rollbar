@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nancy.Extensions;
+using Nancy.Rollbar.Api;
 using Valetude.Rollbar;
 
 namespace Nancy.Rollbar {

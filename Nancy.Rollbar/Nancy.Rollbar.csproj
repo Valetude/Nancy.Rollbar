@@ -57,11 +57,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IHasAccessToken.cs" />
-    <Compile Include="IPersonFactory.cs" />
-    <Compile Include="IRollbarDataFactory.cs" />
-    <Compile Include="IRollbarPayloadFactory.cs" />
-    <Compile Include="IRollbarPayloadSender.cs" />
+    <Compile Include="Api\IHasAccessToken.cs" />
+    <Compile Include="Api\IPersonFactory.cs" />
+    <Compile Include="Api\IRollbarDataFactory.cs" />
+    <Compile Include="Api\IRollbarPayloadFactory.cs" />
+    <Compile Include="Api\IRollbarPayloadSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RollbarDataFactory.cs" />
     <Compile Include="RollbarPayloadFactory.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Nancy.Rollbar.Api;
 using Nancy.Security;
 using Valetude.Rollbar;
 
