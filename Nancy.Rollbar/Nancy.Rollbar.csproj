@@ -60,6 +60,7 @@
     <Compile Include="Api\IHasAccessToken.cs" />
     <Compile Include="Api\IPersonFactory.cs" />
     <Compile Include="Api\IRollbarDataFactory.cs" />
+    <Compile Include="Api\IRollbarDataScrubber.cs" />
     <Compile Include="Api\IRollbarPayloadFactory.cs" />
     <Compile Include="Api\IRollbarPayloadSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
