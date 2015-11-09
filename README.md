@@ -16,8 +16,8 @@ Nuget Package Manager
 
 ## What's inside?
 
-There are 5 interfaces with implementations for 3 of them. Filling out the other
-two is one part of your job.
+There are 6 interfaces with implementations for 3 of them. Filling out the other
+three is one part of your job.
 
 First thing to do is to create a class that implements `IHasAccessToken`. The
 `RollbarAccessToken` property should return the server side token from Rollbar.
@@ -30,17 +30,21 @@ allows you to use your knowledge of how you do Auth in your project to set the
 the `person` field will be filled out automatically using the
 `Context.CurrentUser.Username` as both `Id` and `Username`.
 
+The third thing to do is to implement the `IRollbarDataScrubber` interface.
+This allows you to exclude any sensitive information from the report data that
+will be sent along to Rollbar.
+
 The final thing to do is to wire in the error handler. This is done as any
 `OnError` hook is done.  If you want to wire it in globally you can put the
 appropriate code into a bootstrapper in an override of `ApplicationStartup`. My
 preference is to create an implementation of `IApplicationStartup` and to let
 Nancy discover, instantiate, and initialize it:
 
-The following illustrates that, but `ScrubPayload` is left unimplemented. You
-are 100% responsible for removing passwords and other sensitive information from the
-payload that is sent to Rollbar. While they do have some scrubbing that they do, they
-cannot guess all the various ways you might name fields that you don't want people to
-see. `Nancy.Rollbar` does aboslutely no scrubbing for you.
+You are 100% responsible for removing passwords and other sensitive information from the
+payload that is sent to Rollbar via the `IRollbarDataScrubber` interface. While they do
+have some scrubbing that they do, they cannot guess all the various ways you might name
+fields that you don't want people to see. `Nancy.Rollbar` does not make any assumptions
+about the kinds of fields that you want to protect.
 
 ```csharp
 using Nancy.Bootstrapper;
@@ -58,7 +62,6 @@ namespace Nancy.Rollbar.Tests {
         public void Initialize(IPipelines pipelines) {
             pipelines.OnError.AddItemToStartOfPipeline((ctx, err) => {
                 var payload = _payloadFactory.GetPayload(ctx, err);
-                ScrubPayload(payload); // VERY IMPORTANT!
                 var response = _payloadSender.SendPayload(payload);
                 if (response.StatusCode == RollbarResponseCode.Success) {
                     return null; // To Allow the rest of the pipeline to handle the error
